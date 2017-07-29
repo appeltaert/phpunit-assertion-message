@@ -1,0 +1,19 @@
+{
+  "name": "appeltaert/phpunit-assertion-message",
+  "type": "library",
+  "license": "MIT",
+  "description": "Enhanced PHPUnit assertion messages",
+  "require": {
+    "php": ">=5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Appeltaert\\PAM\\Tests\\": "tests",
+      "Appeltaert\\PAM\\": "src"
+    },
+    "files": ["src/functions.php"]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.7"
+  }
+}
