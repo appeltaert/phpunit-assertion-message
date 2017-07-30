@@ -3,12 +3,13 @@
 namespace Appeltaert\PAM;
 
 
-use Appeltaert\PAM\Processor\ArrayFlattener;
+use Appeltaert\PAM\Processor\ArrayType;
 use Appeltaert\PAM\Processor\ProcessorInterface;
 use Appeltaert\PAM\Processor\Symfony\HTTPResponse;
 use Appeltaert\PAM\Processor\Symfony\RequestProfiler;
 use Appeltaert\PAM\Printer\Plain;
 use Appeltaert\PAM\Printer\PrinterInterface;
+use Appeltaert\PAM\Processor\Vardump;
 
 class PAM
 {
@@ -69,25 +70,22 @@ class PAM
         $this->printargs = $printargs;
 
         if (!self::$defaultEnv) {
-            $argStr = implode(' ', $_SERVER['argv']);
-            self::$defaultEnv = new Env(
-                strpos($argStr, '--debug') !== false,
-                preg_match('/-v|--verbose/', $argStr)
-            );
+            self::$defaultEnv = new Env;
         }
         $this->env = self::$defaultEnv;
 
         if (!self::$defaultProcessors) {
             self::$defaultProcessors = [
                 new HTTPResponse(),
-                new ArrayFlattener(),
-                new RequestProfiler()
+                new RequestProfiler(),
+                new ArrayType(),
+                new Vardump(),
             ];
         }
         $this->processors = self::$defaultProcessors;
 
         if (!self::$defaultPrinter) {
-            self::$defaultPrinter = new Plain;
+            self::$defaultPrinter = new Plain($this->env);
         }
         $this->printer = self::$defaultPrinter;
     }
@@ -123,10 +121,17 @@ class PAM
                                        PrinterInterface $printer = null,
                                        Env $env = null)
     {
-        self::$defaultProcessors = $processors;
-        self::$defaultPrinter = $printer;
-        self::$defaultEnv = $env;
+        if ($processors) {
+            self::$defaultProcessors = $processors;
+        }
+        if ($printer) {
+            self::$defaultPrinter = $printer;
+        }
+        if ($env) {
+            self::$defaultEnv = $env;
+        }
     }
+
 
 
     public function __toString()

@@ -19,11 +19,6 @@ class HTTPResponse implements ProcessorInterface
             && $context instanceof $accepted;
     }
 
-    /**
-     * @param array $collection
-     * @param $context
-     * @return array
-     */
     function normalize(array $collection, $context, $verbose)
     {
         /** @noinspection PhpUndefinedFieldInspection */

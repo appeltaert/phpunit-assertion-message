@@ -16,13 +16,31 @@ class Env
     private $verbose;
 
     /**
+     * @var bool
+     */
+    private $supportingColors;
+
+    /**
      * @param bool $debug
      * @param bool $verbose
+     * @param bool $supportsColors
      */
-    public function __construct($debug, $verbose)
+    public function __construct($debug = null, $verbose = null, $supportsColors = null)
     {
-        $this->debug = (bool)$debug;
-        $this->verbose = (bool)$verbose;
+        $argStr = implode(' ', $_SERVER['argv']);
+
+        $this->debug = null !== $debug
+            ? (bool)$debug
+            : strpos($argStr, '--debug') !== false;
+
+        $this->verbose = null !== $verbose
+            ? (bool) $verbose
+            : preg_match('/-v|--verbose/', $argStr) === 1;
+
+        // this one probably needs more work, f.e. checking if no ansi is passed as an arg etc
+        $this->supportingColors = null !== $supportsColors
+            ? (bool)$supportsColors
+            : posix_isatty("php://input") === true;
     }
 
     /**
@@ -39,5 +57,13 @@ class Env
     public function isVerbose()
     {
         return $this->verbose;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupportingColors()
+    {
+        return $this->supportingColors;
     }
 }

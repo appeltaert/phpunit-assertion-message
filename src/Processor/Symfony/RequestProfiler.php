@@ -34,5 +34,4 @@ class RequestProfiler implements ProcessorInterface
 
         return $return;
     }
-
 }

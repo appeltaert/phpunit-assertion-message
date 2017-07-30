@@ -3,7 +3,7 @@
 namespace Appeltaert\PAM\Processor;
 
 
-class ArrayFlattener implements ProcessorInterface
+class ArrayType implements ProcessorInterface
 {
     function getIdentifier()
     {

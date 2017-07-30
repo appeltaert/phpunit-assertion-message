@@ -3,6 +3,9 @@
 namespace Appeltaert\PAM\Printer;
 
 
+use Appeltaert\PAM\Env;
+use function Appeltaert\PAM\flattenVar;
+
 class Plain implements PrinterInterface
 {
     /**
@@ -21,12 +24,24 @@ class Plain implements PrinterInterface
     private $whitespace = '';
 
     /**
+     * @var string
+     */
+    private $style = '\033[33m%s\033[0m';
+
+    /**
+     * @var Env
+     */
+    private $env;
+
+    /**
+     * @param Env $env
      * @param string $padding
      * @param int $maxdepth
      * @param string $whitespace
      */
-    public function __construct($padding = ' ', $maxdepth = 1, $whitespace = ' ')
+    public function __construct(Env $env, $padding = ' ', $maxdepth = 1, $whitespace = ' ')
     {
+        $this->env = $env;
         $this->padding = $padding;
         $this->maxdepth = $maxdepth;
         $this->whitespace = $whitespace;
@@ -51,7 +66,8 @@ class Plain implements PrinterInterface
             }
             $stringSoFar .= $this->pad("$k:", $longestKey);
             if (!is_array($val)) {
-                $stringSoFar .= "\033[33m$val\033[0m\n";
+                $flattened = flattenVar($val);
+                $stringSoFar .= $this->env->isSupportingColors() ? sprintf($this->style, $flattened) : $flattened;
             } else {
                 $stringSoFar .= $this->walk($padding + $longestKey, $stringSoFar, $val, $depth + 1);
             }
