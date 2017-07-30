@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Appeltaert\PAM\Tests\Lib;
 
 
 class FlattenVarTest extends \PHPUnit_Framework_TestCase

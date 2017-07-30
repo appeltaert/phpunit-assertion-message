@@ -64,7 +64,7 @@ class PAM
      */
     public function __construct($message, array $context = [], array $printargs = [])
     {
-        $this->message = $this->printargs ? vsprintf($message, $printargs) : $message;
+        $this->message = $printargs ? vsprintf($message, $printargs) : $message;
         $this->context = $context;
         $this->printargs = $printargs;
 
