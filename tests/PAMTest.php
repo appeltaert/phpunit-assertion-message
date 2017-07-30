@@ -28,6 +28,16 @@ class PAMTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PAM::__toString
      */
+    function testNoOutputWithNoDebug()
+    {
+        PAM::setDefaults([], null, new Env(false));
+        $this->assertEquals('hello world',
+            (string)new PAM('hello world', [['qwer' => 'qwer']]));
+    }
+
+    /**
+     * @covers PAM::__toString
+     */
     function testWithArgs()
     {
         $this->assertEquals('hello world',

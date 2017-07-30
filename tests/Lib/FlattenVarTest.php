@@ -25,6 +25,9 @@ class toJsonStubFails implements \JsonSerializable {
     }
 }
 
+/**
+ * @covers ::flattenVar
+ */
 class FlattenVarTest extends \PHPUnit_Framework_TestCase
 {
     function testScalars() {

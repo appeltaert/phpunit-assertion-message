@@ -34,7 +34,7 @@ class HTTPResponse implements ProcessorInterface
         else {
             $lines['Content-type'] = $context->headers->get('content-type');
             if ($context->headers->has('location')) {
-                $lines['Redirect to'] = $context->headers->get('location');
+                $lines['Redirect-to'] = $context->headers->get('location');
             }
         }
 

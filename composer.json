@@ -2,10 +2,15 @@
   "name": "appeltaert/phpunit-assertion-message",
   "type": "library",
   "license": "MIT",
-  "description": "Enhanced PHPUnit assertion messages",
+  "description": "Enhanced PHPUnit Assertion Messages - Debug assertions without creating a mess.",
   "require": {
     "php": ">=5.6"
   },
+  "keywords": [
+    "phpunit",
+    "testing"
+  ],
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "Appeltaert\\PAM\\Tests\\": "tests",

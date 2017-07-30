@@ -3,12 +3,11 @@ PHPUnit assertion message [![Build Status](https://travis-ci.org/appeltaert/phpu
 
 *alpha code, might change whenever,wherever*
 
-# todo
+# remaining todo rc1
 
 ## processors
 
-- env to processors
-- tests
+done 
 
 ### symfony http response
 
@@ -30,7 +29,7 @@ PHPUnit assertion message [![Build Status](https://travis-ci.org/appeltaert/phpu
 ## etc
 
 - better test coverage
-- execute on travis 5.4 and up
+
 
 
 

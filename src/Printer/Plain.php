@@ -9,11 +9,6 @@ use function Appeltaert\PAM\flattenVar;
 class Plain implements PrinterInterface
 {
     /**
-     * @var string
-     */
-    private $padding = '';
-
-    /**
      * @var int
      */
     private $maxdepth = 0;
@@ -26,7 +21,7 @@ class Plain implements PrinterInterface
     /**
      * @var string
      */
-    private $style = '\033[33m%s\033[0m';
+    private $style = "\033[33m%s\033[0m";
 
     /**
      * @var Env
@@ -39,10 +34,9 @@ class Plain implements PrinterInterface
      * @param int $maxdepth
      * @param string $whitespace
      */
-    public function __construct(Env $env, $padding = ' ', $maxdepth = 1, $whitespace = ' ')
+    public function __construct(Env $env, $whitespace = ' ', $maxdepth = 2)
     {
         $this->env = $env;
-        $this->padding = $padding;
         $this->maxdepth = $maxdepth;
         $this->whitespace = $whitespace;
     }
@@ -62,12 +56,13 @@ class Plain implements PrinterInterface
 
         foreach($currentLevel as $k => $val) {
             if (0 !== $keysIndex[$k]) {
-                $stringSoFar .= $this->pad(' ', $padding, $depth);
+                $stringSoFar .= $this->pad($this->whitespace, $padding, $depth);
             }
             $stringSoFar .= $this->pad("$k:", $longestKey);
-            if (!is_array($val)) {
+            if (!is_array($val) || $depth >= $this->maxdepth) {
                 $flattened = flattenVar($val);
                 $stringSoFar .= $this->env->isSupportingColors() ? sprintf($this->style, $flattened) : $flattened;
+                $stringSoFar .= "\n";
             } else {
                 $stringSoFar .= $this->walk($padding + $longestKey, $stringSoFar, $val, $depth + 1);
             }
@@ -82,8 +77,7 @@ class Plain implements PrinterInterface
     {
         $content = '';
         $this->walk(0, $content, $collection);
-        return $content;
-
+        return trim($content);
     }
 
     /**
@@ -106,7 +100,7 @@ class Plain implements PrinterInterface
      */
     private function pad($input, $length, $multiplier = 1)
     {
-        return str_pad($input, $length, $this->padding, STR_PAD_LEFT)
+        return str_pad($input, $length, $this->whitespace, STR_PAD_LEFT)
             . str_repeat($this->whitespace, $multiplier);
     }
 }
