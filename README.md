@@ -5,13 +5,17 @@ PHPUnit assertion message [![Build Status](https://travis-ci.org/appeltaert/phpu
 
 # todo
 
-## formatters
+## processors
 
-- env to formatter
+- env to processors
+- tests
 
 ### symfony http response
 
 - profiler data
+  - request
+  - mailer
+  - etc
 - distinctive request info based on env debug vs verbose
 - can we get more info out of the assert and/or test?
 
