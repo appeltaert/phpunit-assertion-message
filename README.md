@@ -1,3 +1,8 @@
+PHPUnit assertion message [![Build Status](https://travis-ci.org/appeltaert/phpunit-assertion-message.svg?branch=master)](https://travis-ci.org/appeltaert/phpunit-assertion-message)
+=======
+
+*alpha code, might change whenever,wherever*
+
 # todo
 
 ## formatters
