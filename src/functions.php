@@ -17,7 +17,7 @@ function flattenVar($v)
     } elseif ($encoded = json_encode($v)) {
         return $encoded;
     } else {
-        return serialize($v);
+        return substr(preg_replace('/\n|(\s\s)/', '', print_r($v, true)), 0, 255);
     }
 }
 
