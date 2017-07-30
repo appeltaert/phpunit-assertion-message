@@ -38,10 +38,10 @@ class PlainTest extends \PHPUnit_Framework_TestCase
      * @param int $depth
      * @param string $expected
      */
-    function testMaxDepth($depth, $expected = '')
+    function testMaxDepth($depth, $expected)
     {
         $printer = new Plain(
-            new Env(true),
+            new Env(true, false, false),
             ' ',
             $depth
         );
