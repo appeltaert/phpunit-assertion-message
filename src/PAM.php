@@ -3,18 +3,19 @@
 namespace Appeltaert\PAM;
 
 
-use Appeltaert\PAM\Formatter\ArrayFlattener;
-use Appeltaert\PAM\Formatter\FormatterInterface;
-use Appeltaert\PAM\Formatter\SymfonyHTTPResponse;
+use Appeltaert\PAM\Processor\ArrayFlattener;
+use Appeltaert\PAM\Processor\ProcessorInterface;
+use Appeltaert\PAM\Processor\Symfony\HTTPResponse;
+use Appeltaert\PAM\Processor\Symfony\RequestProfiler;
 use Appeltaert\PAM\Printer\Plain;
 use Appeltaert\PAM\Printer\PrinterInterface;
 
 class PAM
 {
     /**
-     * @var FormatterInterface[]
+     * @var ProcessorInterface[]
      */
-    static private $defaultFormatters;
+    static private $defaultProcessors;
 
     /**
      * @var PrinterInterface
@@ -27,9 +28,9 @@ class PAM
     static private $defaultEnv;
 
     /**
-     * @var FormatterInterface[]
+     * @var ProcessorInterface[]
      */
-    private $formatters;
+    private $processors;
 
     /**
      * @var PrinterInterface
@@ -67,19 +68,6 @@ class PAM
         $this->context = $context;
         $this->printargs = $printargs;
 
-        if (!self::$defaultFormatters) {
-            self::$defaultFormatters = [
-                new SymfonyHTTPResponse(),
-                new ArrayFlattener()
-            ];
-        }
-        $this->formatters = self::$defaultFormatters;
-
-        if (!self::$defaultPrinter) {
-            self::$defaultPrinter = new Plain;
-        }
-        $this->printer = self::$defaultPrinter;
-
         if (!self::$defaultEnv) {
             $argStr = implode(' ', $_SERVER['argv']);
             self::$defaultEnv = new Env(
@@ -88,6 +76,20 @@ class PAM
             );
         }
         $this->env = self::$defaultEnv;
+
+        if (!self::$defaultProcessors) {
+            self::$defaultProcessors = [
+                new HTTPResponse(),
+                new ArrayFlattener(),
+                new RequestProfiler()
+            ];
+        }
+        $this->processors = self::$defaultProcessors;
+
+        if (!self::$defaultPrinter) {
+            self::$defaultPrinter = new Plain;
+        }
+        $this->printer = self::$defaultPrinter;
     }
 
     /**
@@ -97,11 +99,11 @@ class PAM
     private function process($context = null)
     {
         $collection = [];
-        foreach($this->formatters as $decorator) {
-            if (!$decorator->accepts($context)) {
+        foreach($this->processors as $processor) {
+            if (!$processor->accepts($context)) {
                 continue;
             }
-            $collection[$decorator->getIdentifier()] = $decorator->normalize($collection, $context);
+            $collection[$processor->getIdentifier()] = $processor->normalize($collection, $context, $this->env->isVerbose());
             break;
         }
 
@@ -113,14 +115,15 @@ class PAM
     }
 
     /**
-     * @param array $formatters
+     * @param array $processors
      * @param PrinterInterface|null $printer
+     * @param Env|null $env
      */
-    static public function setDefaults(array $formatters = [],
+    static public function setDefaults(array $processors = [],
                                        PrinterInterface $printer = null,
                                        Env $env = null)
     {
-        self::$defaultFormatters = $formatters;
+        self::$defaultProcessors = $processors;
         self::$defaultPrinter = $printer;
         self::$defaultEnv = $env;
     }

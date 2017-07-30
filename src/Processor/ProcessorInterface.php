@@ -1,9 +1,9 @@
 <?php
 
-namespace Appeltaert\PAM\Formatter;
+namespace Appeltaert\PAM\Processor;
 
 
-interface FormatterInterface
+interface ProcessorInterface
 {
     /**
      * @return string
@@ -19,7 +19,8 @@ interface FormatterInterface
     /**
      * @param array $collection
      * @param mixed $context
+     * @param bool $verbose
      * @return array
      */
-    public function normalize(array $collection, $context);
+    public function normalize(array $collection, $context, $verbose);
 }

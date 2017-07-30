@@ -1,9 +1,11 @@
 <?php
 
-namespace Appeltaert\PAM\Formatter;
+namespace Appeltaert\PAM\Processor\Symfony;
 
 
-class SymfonyHTTPResponse implements FormatterInterface
+use Appeltaert\PAM\Processor\ProcessorInterface;
+
+class HTTPResponse implements ProcessorInterface
 {
     function getIdentifier()
     {
@@ -21,35 +23,26 @@ class SymfonyHTTPResponse implements FormatterInterface
      * @param array $collection
      * @param $context
      * @return array
-     * @noinspection PhpUndefinedFieldInspection
      */
-    function normalize(array $collection, $context)
+    function normalize(array $collection, $context, $verbose)
     {
+        /** @noinspection PhpUndefinedFieldInspection */
+        /** @noinspection PhpUndefinedMethodInspection */
+
         $lines = [];
 
         $lines['Code'] = $context->getStatusCode();
 
-        if ($context->headers->has('location')) {
-            $lines['Redirect to'] = $context->headers->get('location');
-
+        if ($verbose) {
+            $lines['Headers'] = $context->headers->all();
+        }
+        else {
+            $lines['Content-type'] = $context->headers->get('content-type');
+            if ($context->headers->has('location')) {
+                $lines['Redirect to'] = $context->headers->get('location');
+            }
         }
 
-//        $lines['Headers'] = [
-//            'werewr' => ['qwerqwre', 'qwerqwer']
-//        ];
-//
-//        $lines['Headers'] = [
-//            'cache-control' =>
-//                [
-//                    'no-cache',
-//                ],
-//            'x-debug-token' =>'qer'
-//        ];
-//        ob_get_level()?ob_end_clean():'';echo '<pre>',__FILE__,':',__LINE__;var_export($context->headers->all());die;
-
-        $lines['Headers'] = $context->headers->all();
-
-        /** @noinspection PhpUndefinedFieldInspection */
         if ($cookies = $context->headers->getCookies()) {
             $lines['Cookies'] = $cookies;
         }
@@ -61,11 +54,6 @@ class SymfonyHTTPResponse implements FormatterInterface
             isset($matches[1]) or preg_match('/<h1>([^<]*)<\/h1>/i', $context->getContent(), $matches);
             $lines['Exception'] = isset($matches[1]) ? trim($matches[1]) : 'Unknown exception';
         }
-
-//        $lines['Headers2'] = [
-//            'x-debug-token' => ['qewr', 'qwer' => ['qwer','qwer']],
-//            'cache-control' => 'no-cache',
-//        ];
 
         return $lines;
     }

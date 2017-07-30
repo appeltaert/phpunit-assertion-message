@@ -1,9 +1,9 @@
 <?php
 
-namespace Appeltaert\PAM\Formatter;
+namespace Appeltaert\PAM\Processor;
 
 
-class ArrayFlattener implements FormatterInterface
+class ArrayFlattener implements ProcessorInterface
 {
     function getIdentifier()
     {
@@ -15,7 +15,7 @@ class ArrayFlattener implements FormatterInterface
         return is_array($context);
     }
 
-    function normalize(array $collection, $context)
+    function normalize(array $collection, $context, $verbose)
     {
         return $context;
     }
