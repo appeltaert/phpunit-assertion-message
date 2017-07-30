@@ -2,6 +2,10 @@
 
 namespace Appeltaert\PAM;
 
+/**
+ * @param $v
+ * @return mixed|string
+ */
 function flattenVar($v)
 {
     if (is_scalar($v)) {
@@ -15,4 +19,22 @@ function flattenVar($v)
     } else {
         return serialize($v);
     }
+}
+
+/**
+ * @param object $obj
+ * @param array $getters
+ * @return array
+ */
+function callGetters($obj, array $getters)
+{
+    $return = [];
+    foreach($getters as $getter) {
+        $caller = "get$getter";
+        if (!method_exists($obj, $caller)) {
+            throw new \InvalidArgumentException();
+        }
+        $return[$getter] = $obj->$caller();
+    }
+    return $return;
 }
