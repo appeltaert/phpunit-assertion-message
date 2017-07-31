@@ -54,11 +54,6 @@ class PAM
     private $context;
 
     /**
-     * @var array
-     */
-    private $printargs;
-
-    /**
      * @param string $message
      * @param array $context
      * @param array $printargs
@@ -67,7 +62,6 @@ class PAM
     {
         $this->message = $printargs ? vsprintf($message, $printargs) : $message;
         $this->context = $context;
-        $this->printargs = $printargs;
 
         if (!self::$defaultEnv) {
             self::$defaultEnv = new Env;

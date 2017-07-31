@@ -22,12 +22,16 @@ function flattenVar($v)
 }
 
 /**
- * @param object $obj
+ * @param mixed $obj
  * @param array $getters
  * @return array
  */
 function callGetters($obj, array $getters)
 {
+    if (!is_object($obj)) {
+        throw new \InvalidArgumentException;
+    }
+
     $return = [];
     foreach($getters as $getter) {
         $caller = "get$getter";
