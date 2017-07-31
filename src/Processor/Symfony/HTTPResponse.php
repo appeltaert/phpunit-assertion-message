@@ -7,19 +7,19 @@ use Appeltaert\PAM\Processor\ProcessorInterface;
 
 class HTTPResponse implements ProcessorInterface
 {
-    function getIdentifier()
+    public function getIdentifier()
     {
         return 'HTTP response';
     }
 
-    function accepts($context)
+    public function accepts($context)
     {
         $accepted = '\Symfony\Component\HttpFoundation\Response';
         return is_object($context)
             && $context instanceof $accepted;
     }
 
-    function normalize(array $collection, $context, $verbose)
+    public function normalize(array $collection, $context, $verbose)
     {
         /** @noinspection PhpUndefinedFieldInspection */
         /** @noinspection PhpUndefinedMethodInspection */
