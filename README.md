@@ -1,4 +1,5 @@
 PHPUnit assertion message [![Build Status](https://travis-ci.org/appeltaert/phpunit-assertion-message.svg?branch=master)](https://travis-ci.org/appeltaert/phpunit-assertion-message)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/3f42fd40-e1dd-422c-bc84-3b8b4769ddc2/mini.png)](https://insight.sensiolabs.com/projects/3f42fd40-e1dd-422c-bc84-3b8b4769ddc2)
 =======
 
 *alpha code, might change whenever,wherever*
