@@ -10,15 +10,22 @@ function flattenVar($v)
 {
     if (is_scalar($v)) {
         return $v;
-    } elseif (is_object($v) && method_exists($v, '__toString')) {
-        return (string) $v;
-    } elseif(is_resource($v)) {
-        return print_r($v, true);
-    } elseif ($encoded = json_encode($v)) {
-        return $encoded;
-    } else {
-        return substr(preg_replace('/\n|(\s\s)/', '', print_r($v, true)), 0, 255);
     }
+    if (is_object($v)) {
+        if (method_exists($v, '__toString')) {
+            return (string) $v;
+        } elseif ($v instanceof \DateTimeInterface) {
+            return sprintf('%s(%s)', get_class($v), $v->format(\DateTime::ISO8601));
+        }
+    }
+    if (is_resource($v)) {
+        return sprintf('%s(#%d)', get_resource_type($v), $v);
+    }
+    if ($encoded = json_encode($v)) {
+        return $encoded;
+    }
+
+    return substr(preg_replace('/\n|(\s\s)/', '', print_r($v, true)), 0, 255);
 }
 
 /**

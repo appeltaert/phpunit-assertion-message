@@ -37,12 +37,18 @@ class FlattenVarTest extends \PHPUnit_Framework_TestCase
 
     function testResource() {
         $res = fopen('php://input', 'r');
-        $this->assertContains('Resource id #', flattenVar($res));
+        $this->assertTrue(preg_match('/stream\(#\d+\)/', flattenVar($res)) === 1);
         fclose($res);
     }
 
     function testObjectToString() {
         $this->assertSame('toString', flattenVar(new toStringStub()));
+    }
+
+    function testDateTime() {
+        $this->assertSame('DateTime(2010-01-01T00:00:00+0000)',
+            flattenVar(new \DateTime('1-1-2010', new \DateTimeZone('utc')))
+        );
     }
 
     function testObjectJson() {
