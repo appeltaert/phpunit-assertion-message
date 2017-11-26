@@ -2,24 +2,29 @@
 
 namespace Appeltaert\PAM\Tests\Lib;
 
-
 use function Appeltaert\PAM\flattenVar;
 
-class toStringStub {
-    function __toString() {
+class toStringStub
+{
+    public function __toString()
+    {
         return 'toString';
     }
 }
 
-class toJsonStub implements \JsonSerializable {
-    function jsonSerialize() {
+class toJsonStub implements \JsonSerializable
+{
+    public function jsonSerialize()
+    {
         return [1,2,3];
     }
 }
 
-class toJsonStubFails implements \JsonSerializable {
+class toJsonStubFails implements \JsonSerializable
+{
     public $r;
-    function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $this->r = fopen('php://input', 'r');
         return $this->r;
     }
@@ -30,32 +35,39 @@ class toJsonStubFails implements \JsonSerializable {
  */
 class FlattenVarTest extends \PHPUnit_Framework_TestCase
 {
-    function testScalars() {
+    public function testScalars()
+    {
         $this->assertSame('string', flattenVar('string'));
         $this->assertSame(123, flattenVar(123));
     }
 
-    function testResource() {
+    public function testResource()
+    {
         $res = fopen('php://input', 'r');
         $this->assertTrue(preg_match('/stream\(#\d+\)/', flattenVar($res)) === 1);
         fclose($res);
     }
 
-    function testObjectToString() {
+    public function testObjectToString()
+    {
         $this->assertSame('toString', flattenVar(new toStringStub()));
     }
 
-    function testDateTime() {
-        $this->assertSame('DateTime(2010-01-01T00:00:00+0000)',
+    public function testDateTime()
+    {
+        $this->assertSame(
+            'DateTime(2010-01-01T00:00:00+0000)',
             flattenVar(new \DateTime('1-1-2010', new \DateTimeZone('utc')))
         );
     }
 
-    function testObjectJson() {
+    public function testObjectJson()
+    {
         $this->assertSame('[1,2,3]', flattenVar(new toJsonStub()));
     }
 
-    function testJsonFailResolvesToPrintr() {
+    public function testJsonFailResolvesToPrintr()
+    {
         $stub = new toJsonStubFails();
         $this->assertContains('Appeltaert\PAM\Tests\Lib\toJsonStubFails Object([r] => Resource id', flattenVar($stub));
         fclose($stub->r);

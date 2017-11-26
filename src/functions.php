@@ -40,7 +40,7 @@ function callGetters($obj, array $getters)
     }
 
     $return = [];
-    foreach($getters as $getter) {
+    foreach ($getters as $getter) {
         $caller = "get$getter";
         if (!method_exists($obj, $caller)) {
             throw new \InvalidArgumentException();

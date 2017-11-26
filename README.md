@@ -29,7 +29,6 @@ My message
 // $this->assertTrue($client->getResponse()->isSuccessful())
 // $collector = $profiler->getCollector()..
 // var_dump($collector->...);
-// ob_get_level()?ob_end_clean():'';echo '<pre>',__FILE__,':',__LINE__;var_dump($response->getStatusCode());die;
 // echo $response->getContent();
 // var_dump($response->headers->all();
 // die.. die.. die..

@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Processor;
 
-
 use function Appeltaert\PAM\flattenVar;
 
 class Vardump implements ProcessorInterface

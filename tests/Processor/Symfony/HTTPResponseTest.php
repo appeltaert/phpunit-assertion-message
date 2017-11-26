@@ -2,8 +2,6 @@
 
 namespace Appeltaert\PAM\Tests\Processor\Symfony;
 
-
-
 use Appeltaert\PAM\Processor\Symfony\HTTPResponse;
 
 /**
@@ -18,7 +16,7 @@ class HTTPResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers HTTPResponse::accepts()
      */
-    function testAccepts()
+    public function testAccepts()
     {
         $case = new HTTPResponse();
         $this->assertFalse($case->accepts(new \stdClass()));
@@ -30,7 +28,7 @@ class HTTPResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers HTTPResponse::normalize()
      */
-    function testNonVerbose()
+    public function testNonVerbose()
     {
         $case = new HTTPResponse();
 
@@ -50,7 +48,7 @@ class HTTPResponseTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $headers->method('get')
-            ->willReturnCallback(function($arg) {
+            ->willReturnCallback(function ($arg) {
                 return $arg;
             });
 

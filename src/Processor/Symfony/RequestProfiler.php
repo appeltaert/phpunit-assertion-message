@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Processor\Symfony;
 
-
 use Appeltaert\PAM\Processor\ProcessorInterface;
 use function Appeltaert\PAM\callGetters;
 

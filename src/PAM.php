@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM;
 
-
 use Appeltaert\PAM\Processor\ArrayType;
 use Appeltaert\PAM\Processor\ProcessorInterface;
 use Appeltaert\PAM\Processor\Symfony\HTTPResponse;
@@ -16,17 +15,17 @@ class PAM
     /**
      * @var ProcessorInterface[]
      */
-    static private $defaultProcessors;
+    private static $defaultProcessors;
 
     /**
      * @var PrinterInterface
      */
-    static private $defaultPrinter;
+    private static $defaultPrinter;
 
     /**
      * @var Env
      */
-    static private $defaultEnv;
+    private static $defaultEnv;
 
     /**
      * @var ProcessorInterface[]
@@ -91,7 +90,7 @@ class PAM
     private function process($context = null)
     {
         $collection = [];
-        foreach($this->processors as $processor) {
+        foreach ($this->processors as $processor) {
             if (!$processor->accepts($context)) {
                 continue;
             }
@@ -111,10 +110,11 @@ class PAM
      * @param PrinterInterface|null $printer
      * @param Env|null $env
      */
-    static public function setDefaults(array $processors = [],
-                                       PrinterInterface $printer = null,
-                                       Env $env = null)
-    {
+    public static function setDefaults(
+        array $processors = [],
+        PrinterInterface $printer = null,
+        Env $env = null
+    ) {
         if ($processors) {
             self::$defaultProcessors = $processors;
         }
@@ -135,7 +135,7 @@ class PAM
         }
 
         $processedContext = '';
-        foreach($this->context as $ctx) {
+        foreach ($this->context as $ctx) {
             $processedContext .= $this->process($ctx) . "\n";
         }
 

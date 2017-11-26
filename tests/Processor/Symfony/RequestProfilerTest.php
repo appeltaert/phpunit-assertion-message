@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Tests\Processor\Symfony;
 
-
 use Appeltaert\PAM\Processor\Symfony\RequestProfiler;
 
 /**
@@ -12,7 +11,7 @@ class RequestProfilerTest extends \PHPUnit_Framework_TestCase
 {
     private $accepted = 'Symfony\Component\HttpKernel\DataCollector\RequestDataCollector';
 
-    function testAccepts()
+    public function testAccepts()
     {
         $case = new RequestProfiler();
         $this->assertFalse($case->accepts(new \stdClass()));
@@ -21,7 +20,7 @@ class RequestProfilerTest extends \PHPUnit_Framework_TestCase
         ));
     }
 
-    function testNormalize()
+    public function testNormalize()
     {
         $case = new RequestProfiler();
 
@@ -35,7 +34,9 @@ class RequestProfilerTest extends \PHPUnit_Framework_TestCase
         ];
 
         $mock = $this->getMockBuilder($this->accepted)
-            ->setMethods(array_map(function($v) { return 'get' . $v; }, $methodsExtracted))
+            ->setMethods(array_map(function ($v) {
+                return 'get' . $v;
+            }, $methodsExtracted))
             ->allowMockingUnknownTypes()
             ->getMock();
 

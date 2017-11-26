@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Tests;
 
-
 use Appeltaert\PAM\Env;
 use Appeltaert\PAM\PAM;
 
@@ -11,7 +10,7 @@ class PAMTest extends \PHPUnit_Framework_TestCase
     private $arrayContextDump = "\n\nArray: key: val\n\n";
     private $arrayContext = ['key' => 'val'];
 
-    function setUp()
+    public function setUp()
     {
         PAM::setDefaults([], null, new Env(true, false, false));
     }
@@ -19,46 +18,56 @@ class PAMTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers PAM::__toString
      */
-    function testBasic()
+    public function testBasic()
     {
-        $this->assertEquals('hello world',
-            (string)new PAM('hello world'));
+        $this->assertEquals(
+            'hello world',
+            (string)new PAM('hello world')
+        );
     }
 
     /**
      * @covers PAM::__toString
      */
-    function testNoOutputWithNoDebug()
+    public function testNoOutputWithNoDebug()
     {
         PAM::setDefaults([], null, new Env(false));
-        $this->assertEquals('hello world',
-            (string)new PAM('hello world', [['qwer' => 'qwer']]));
+        $this->assertEquals(
+            'hello world',
+            (string)new PAM('hello world', [['qwer' => 'qwer']])
+        );
     }
 
     /**
      * @covers PAM::__toString
      */
-    function testWithArgs()
+    public function testWithArgs()
     {
-        $this->assertEquals('hello world',
-            (string)new PAM('hello%s%s', [], [' ', 'world']));
+        $this->assertEquals(
+            'hello world',
+            (string)new PAM('hello%s%s', [], [' ', 'world'])
+        );
     }
 
     /**
      * @covers PAM::__toString
      */
-    function testWithContext()
+    public function testWithContext()
     {
-        $this->assertEquals("hello" . $this->arrayContextDump,
-            (string)new PAM('hello', [$this->arrayContext]));
+        $this->assertEquals(
+            "hello" . $this->arrayContextDump,
+            (string)new PAM('hello', [$this->arrayContext])
+        );
     }
 
     /**
      * @covers PAM::__toString
      */
-    function testWithContextAndArgs()
+    public function testWithContextAndArgs()
     {
-        $this->assertEquals("hello world" . $this->arrayContextDump,
-            (string)new PAM('hello%s%s', [$this->arrayContext], [' ', 'world']));
+        $this->assertEquals(
+            "hello world" . $this->arrayContextDump,
+            (string)new PAM('hello%s%s', [$this->arrayContext], [' ', 'world'])
+        );
     }
 }

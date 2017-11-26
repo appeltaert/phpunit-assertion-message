@@ -22,7 +22,7 @@ class PlainTest extends \PHPUnit_Framework_TestCase
         ]
     ];
 
-    function maxDepthProvider()
+    public function maxDepthProvider()
     {
         return [
             [0, file_get_contents(__DIR__ . '/../Resources/Printer/Plain/parsedArrayDepth0.txt')],
@@ -38,7 +38,7 @@ class PlainTest extends \PHPUnit_Framework_TestCase
      * @param int $depth
      * @param string $expected
      */
-    function testMaxDepth($depth, $expected)
+    public function testMaxDepth($depth, $expected)
     {
         $printer = new Plain(
             new Env(true, false, false),
@@ -51,11 +51,12 @@ class PlainTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    function testWhitespaceStrings()
+    public function testWhitespaceStrings()
     {
         $printer = new Plain(
             new Env(true, false, false),
-            '+', 2
+            '+',
+            2
         );
         $this->assertSame(
             str_replace('~', '+', file_get_contents(__DIR__ . '/../Resources/Printer/Plain/parsedArrayDepth2WhitespaceReplacements.txt')),

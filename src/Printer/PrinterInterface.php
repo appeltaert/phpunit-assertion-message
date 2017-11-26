@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Printer;
 
-
 use Appeltaert\PAM\Env;
 
 interface PrinterInterface

@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Processor;
 
-
 class ArrayType implements ProcessorInterface
 {
     public function getIdentifier()

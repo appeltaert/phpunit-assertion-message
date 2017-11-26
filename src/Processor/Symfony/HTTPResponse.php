@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Processor\Symfony;
 
-
 use Appeltaert\PAM\Processor\ProcessorInterface;
 
 class HTTPResponse implements ProcessorInterface
@@ -30,8 +29,7 @@ class HTTPResponse implements ProcessorInterface
 
         if ($verbose) {
             $lines['Headers'] = $context->headers->all();
-        }
-        else {
+        } else {
             $lines['Content-type'] = $context->headers->get('content-type');
             if ($context->headers->has('location')) {
                 $lines['Redirect-to'] = $context->headers->get('location');

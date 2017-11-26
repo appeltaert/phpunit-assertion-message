@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Processor;
 
-
 interface ProcessorInterface
 {
     /**

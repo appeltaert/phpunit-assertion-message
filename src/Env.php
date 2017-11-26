@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM;
 
-
 class Env
 {
     /**

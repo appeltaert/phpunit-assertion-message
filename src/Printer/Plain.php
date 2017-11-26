@@ -2,7 +2,6 @@
 
 namespace Appeltaert\PAM\Printer;
 
-
 use Appeltaert\PAM\Env;
 use function Appeltaert\PAM\flattenVar;
 
@@ -54,7 +53,7 @@ class Plain implements PrinterInterface
 
         $keysIndex = array_flip(array_keys($currentLevel));
 
-        foreach($currentLevel as $k => $val) {
+        foreach ($currentLevel as $k => $val) {
             if (0 !== $keysIndex[$k]) {
                 $stringSoFar .= $this->pad($this->whitespace, $padding, $depth);
             }
@@ -86,7 +85,7 @@ class Plain implements PrinterInterface
      */
     private function longest(array $vals)
     {
-        usort($vals, function($a, $b) {
+        usort($vals, function ($a, $b) {
             return strlen($b) - strlen($a);
         });
         return strlen($vals[0]);
