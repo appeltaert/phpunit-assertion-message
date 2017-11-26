@@ -24,11 +24,19 @@ class RequestProfiler implements ProcessorInterface
 
         $return = array_merge($return, callGetters($context, [
             'Format',
-            'StatusText',
             'Route',
+            'StatusText',
             'StatusCode',
             'ContentType',
-            'PathInfo'
+            'PathInfo',
+            'Method',
+            'Locale',
+            'RouteParams',
+            'Controller',
+            'Redirect',
+            'SessionAttributes',
+            'SessionMetaData',
+
         ]));
 
         return $return;
