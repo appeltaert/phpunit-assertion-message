@@ -30,7 +30,14 @@ class RequestProfilerTest extends \PHPUnit_Framework_TestCase
             'Route',
             'StatusCode',
             'ContentType',
-            'PathInfo'
+            'PathInfo',
+            'Method',
+            'Locale',
+            'RouteParams',
+            'Controller',
+            'Redirect',
+            'SessionAttributes',
+            'SessionMetaData',
         ];
 
         $mock = $this->getMockBuilder($this->accepted)
