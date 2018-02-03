@@ -126,8 +126,6 @@ class PAM
         }
     }
 
-
-
     public function __toString()
     {
         if (!$this->env->isDebug() || !$this->context) {

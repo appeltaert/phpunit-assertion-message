@@ -36,14 +36,21 @@ function flattenVar($v)
 function callGetters($obj, array $getters)
 {
     if (!is_object($obj)) {
-        throw new \InvalidArgumentException;
+        throw new \InvalidArgumentException(sprintf(
+            '%s is not an object',
+            gettype($obj)
+        ));
     }
 
     $return = [];
     foreach ($getters as $getter) {
         $caller = "get$getter";
         if (!method_exists($obj, $caller)) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException(sprintf(
+                '%s is not a method on %s',
+                $caller,
+                get_class($obj)
+            ));
         }
         $return[$getter] = $obj->$caller();
     }
