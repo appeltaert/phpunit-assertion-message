@@ -13,8 +13,13 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Appeltaert\\PAM\\Tests\\": "tests",
       "Appeltaert\\PAM\\": "src"
+    },
+    "files": ["src/functions.php"]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Appeltaert\\PAM\\Tests\\": "tests"
     },
     "files": ["src/functions.php"]
   },
