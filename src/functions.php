@@ -21,9 +21,12 @@ function flattenVar($v)
     if (is_resource($v)) {
         return sprintf('%s(#%d)', get_resource_type($v), $v);
     }
-    if ($encoded = json_encode($v)) {
-        return $encoded;
-    }
+    try {
+        $encoded = json_encode($v);
+        if (!json_last_error()) {
+            return $encoded;
+        }
+    } catch(\Exception $e) {} // ignore logic errors caused while serializing
 
     return substr(preg_replace('/\n|(\s\s)/', '', print_r($v, true)), 0, 255);
 }
