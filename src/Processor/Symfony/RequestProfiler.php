@@ -32,12 +32,15 @@ class RequestProfiler implements ProcessorInterface
             'Method',
             'Locale',
             'RouteParams',
-            'Controller',
             'Redirect',
             'SessionAttributes',
             'SessionMetaData',
-
         ]));
+
+        $controllerInfo = $context->getController();
+        $return['Action'] = $controllerInfo['class'] .'::'. $controllerInfo['method'];
+
+        $return = array_filter($return);
 
         return $return;
     }
