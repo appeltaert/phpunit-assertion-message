@@ -9,17 +9,24 @@ composer require --dev appeltaert/phpunit-assertion-message
 
 ### Usage
 
-1) Simply wrap whatever message you have in a `new PAM($message, [$context, ...])` instance.
+1) Simply wrap whatever message you normally pass to assertions in a `new PAM(string $message, [mixed $context,...])` instance.
 2) Run `phpunit` with **--debug**
 
-This will turn this occasional mess while debugging:
+`$context` can be basically be anything, for now there's only explicit support for Symfony `Response` and `Request` objects, but
+as a final resort a var flattening processor will take over to basically make anything readable if no processor can handle your context.
+
+
+#### Before
+
+This will turn this occasional mess while debugging.
 
 ```php
 $client->enableProfiler();
 $response = $client->getResponse();
 
 $this->assertTrue($response->isSuccessful(), "My message");
-
+```
+```
 There was 1 failure:
     
 1) Tests\AppBundle\Controller\DefaultControllerTest::testIndex
@@ -32,10 +39,11 @@ My message
 // echo $response->getContent();
 // var_dump($response->headers->all();
 // die.. die.. die..
-
 ```
 
-Into this:
+#### After
+
+Into this.
 
 ```php
 $client->enableProfiler();
@@ -43,7 +51,8 @@ $response = $client->getResponse();
 
 $this->assertTrue($response->isSuccessful(), 
     new PAM("My message", [$response, $profiler->getCollector('request')]));
-
+```
+```
 There was 1 failure:
 
 1) Tests\AppBundle\Controller\DefaultControllerTest::testIndex
@@ -62,7 +71,7 @@ Request profile:      Format: html
 
 ```
 
-## Docs
+## How it works
 
 ### Processors
 
@@ -76,19 +85,13 @@ $response = $client->getResponse();
 $this->assertTrue($response->isSuccessful(), new PAM("My message", [$response]));
 ```
 ```text
-HTTP response:         Code: 200
-               Content-type: text/html; charset=UTF-8
-                    Cookies: 0: qwer=qewrqwer; path=/; httponly
-                  Exception: Exception message (500 Internal Server Error)                    
-```
-`--verbose`
-```text
-HTTP response:         Code: 200
-                    Headers:  content-type: ["text\/html; charset=UTF-8"]
-                             cache-control: ["no-cache, private"]
-                                      date: ["Sun, 26 Nov 2017 16:34:43 GMT"]
-                  Exception: Exception message (500 Internal Server Error)                    
-
+HTTP response:      Code: 500
+                 Headers:  content-type: ["text\/html; charset=UTF-8"]
+                          cache-control: ["no-cache, private"]
+                                   date: ["Fri, 23 Feb 2018 21:12:32 GMT"]
+                          x-debug-token: ["771d20"]
+               Exception: qewr (500 Internal Server Error)
+                   
 ```
 
 **Symfony request profiler**
@@ -113,58 +116,56 @@ Request profile:            Format: html
                        RouteParams:    page: 1
                                     _format: html
                                     _locale: en
-                        Controller: array (count=4)
-                          Redirect: 
-                 SessionAttributes: Key: Value
-                   SessionMetaData:   Created: Sun, 26 Nov 17 19:33:03 +0100
-                                    Last used: Sun, 26 Nov 17 19:33:03 +0100
+                 SessionAttributes: key: val
+                   SessionMetaData:   Created: Fri, 23 Feb 18 22:12:31 +0100
+                                    Last used: Fri, 23 Feb 18 22:12:31 +0100
                                      Lifetime: 0
-
+                            Action: AppBundle\Controller\BlogController::indexAction
 ```
 
 **Array**
 ```php
 $someArray = [];
-$this->assertArrayHasKey("test", $array, new PAM("My message", [$response]));
+$this->assertArrayHasKey("test", $array, new PAM("My message", [
+    'qwerqwer' => 'qwerqewr', ['qwerqewr', 'qwerqwer']
+]));
 ```
-@todo result
+```
+Array: qwerqwer: qwerqewr
+              0: 0: qwerqewr
+                 1: qwerqwer
 
-**Any other var**
-```php
-$this->assertInstanceOf($someVar, \SomeObject::class, new PAM("My message", [$someVar]));
 ```
-@todo result
 
 
 ### Config
 
-**Printer @todo**
+#### Printer
+At the moment there is only one printer, `Plain`.
 
-- The default printer `Appeltaert\PAM\Printer\Plain` can be configured for whitespace, max depth and style. 
-- Changing the defaults before every test
-
-instructions @todo
-
+#### Statically set all options
 ```php
 PAM::setDefaults($processors, $printer, $env);
 ```
-- ... @todo
 
+#### Overriding the environment
+```
+$env = new Env($debug = null, $verbose = null, $supportsColors = null);
+PAM::setDefaults([], null, $env);
+```
 
+### roadmap 
 
-
-
-
----
-### roadmap v1.1
+#### v1.1
 
 **processors**
 
-- symfony data collectors
-- distinctive request info based on env debug vs verbose
+- more symfony
+- move them to separate suggested repos
+- make them pluggable
  
 **printer**
 
+- distinctive dumps based on env, more info --verbose, less without
 - detect interactive terminal(for colored output f.e.), also check ansi arguments.
 - posix_isatty, XTERM check?
-- even possible without too much overhead? cant sacrifise performance for some flowers
