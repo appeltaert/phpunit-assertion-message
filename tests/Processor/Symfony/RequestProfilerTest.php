@@ -40,15 +40,29 @@ class RequestProfilerTest extends \PHPUnit_Framework_TestCase
             'SessionMetaData',
         ];
 
+        $calls = array_map(function ($v) {
+            return 'get' . $v;
+        }, $methodsExtracted);
+
+        $calls = array_fill_keys($calls, 1);
+
+        $calls['getController'] = ['class' => 'Controller', 'method' => 'Action'];
+
         $mock = $this->getMockBuilder($this->accepted)
-            ->setMethods(array_map(function ($v) {
-                return 'get' . $v;
-            }, $methodsExtracted))
+            ->setMethods(array_keys($calls))
             ->allowMockingUnknownTypes()
-            ->getMock();
+            ->getMock()
+        ;
+        foreach($calls as $method => $value) {
+            $mock->method($method)->willReturn($value);
+        }
 
         $return = $case->normalize([], $mock, false);
 
-        $this->assertEquals(array_fill_keys($methodsExtracted, null), $return);
+        $expected = array_fill_keys($methodsExtracted, 1);
+        $expected['Action'] = 'Controller::Action';
+        unset($expected['Controller']);
+
+        $this->assertEquals($expected, $return);
     }
 }
